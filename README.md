@@ -1,13 +1,15 @@
 # SQL Injection Demonstration on DVWA - Metasploitable Target
 
-**Author:** NyxTheDark  
-**GitHub:** [https://github.com/NyxTheDark](https://github.com/NyxTheDark)  
 **Target:** Metasploitable VM (192.168.29.215)  
 **Attacker:** Kali Linux  
 
 ## Overview
 
 This project demonstrates SQL injection vulnerabilities using the Damn Vulnerable Web Application (DVWA) running on a Metasploitable virtual machine. The demonstration showcases how SQL injection attacks work in a controlled penetration testing environment using Kali Linux as the attacking platform.
+
+## What is SQL injection attack
+It is a security flaw in web applications where attackers insert harmful SQL code through user inputs. This can allow them to access sensitive data, change database contents or even take control of the system. It's important to know about SQL Injection to keep web applications secure.(From geeksforgeeks).
+Basically we use certain condiation based code to trick the site or application into showing the SQL database table
 
 ## 📸 Visual Demonstration
 
@@ -55,20 +57,6 @@ This project demonstrates SQL injection vulnerabilities using the Damn Vulnerabl
    - Bypasses authentication logic
    - Returns all user records instead of just one
 
-2. **UNION-based SQL Injection**
-   ```sql
-   1' UNION SELECT user,password FROM users --
-   ```
-   - Extracts sensitive data from the database
-   - Reveals usernames and password hashes
-
-3. **Database Information Extraction**
-   ```sql
-   1' UNION SELECT version(),database() --
-   ```
-   - Reveals database version and name
-   - Helps with further exploitation planning
-
 ## 🤖 Automated Exploitation
 
 ### Running the Exploit Script
@@ -83,12 +71,7 @@ chmod +x sql_injection_exploit.sh
 ./sql_injection_exploit.sh
 ```
 
-### Script Features
-- Automated login to DVWA
-- Multiple SQL injection payload testing
-- Database enumeration
-- User credential extraction
-- Results logging and reporting
+### Pleas make user to use th directory in which the file sql_injection_exploit.sh is placed or it may not run.
 
 ## 📊 Results and Impact
 
@@ -110,29 +93,6 @@ User Credentials Extracted:
 - smithy: 5f4dcc3b5aa765d61d8327deb882cf99
 ```
 
-## 🔒 Prevention
-
-### Secure Coding Practices
-1. **Use Parameterized Queries**
-   ```php
-   $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
-   $stmt->execute([$user_id]);
-   ```
-
-2. **Input Validation**
-   ```php
-   $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
-   ```
-
-3. **Escape Special Characters**
-   ```php
-   $id = mysqli_real_escape_string($connection, $_GET['id']);
-   ```
-
-## ⚠️ Legal and Ethical Notice
-
-This demonstration is for **educational purposes only**. Only perform these tests on systems you own or have explicit permission to test. Always ensure compliance with local laws and regulations.
-
 ## 📁 Project Files
 
 ```
@@ -148,7 +108,4 @@ SQL Injection/
     ├── 06_sql_injection_page.png
     └── 07_basic_injection_test.png
 ```
-
 ---
-
-**Remember**: Use this knowledge responsibly and ethically. Always obtain proper authorization before testing security vulnerabilities.
