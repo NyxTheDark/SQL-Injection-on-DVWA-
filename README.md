@@ -56,6 +56,8 @@ Basically we use certain condiation based code to trick the site or application 
    ```
    - Bypasses authentication logic
    - Returns all user records instead of just one
+  
+Note: Other types of possible Injections are included in payloads file. 
 
 ## 🤖 Automated Exploitation
 
@@ -109,3 +111,4 @@ SQL Injection/
     └── 07_basic_injection_test.png
 ```
 ---
+
