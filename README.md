@@ -100,8 +100,9 @@ User Credentials Extracted:
 ```
 SQL Injection/
 ├── sql_injection_exploit.sh     # Automated exploitation script
-├── README.md                     # This documentation
-└── screenshots/                  # Visual proof of concept
+├── README.md                    # This is documentation
+├── typs_of_payloads.txt         # Contains the payloads 
+└── screenshots/                 # Visual proof of concept
     ├── 01_metasploitable_vm.png
     ├── 02_kali_linux_setup.png
     ├── 03_network_connectivity.png
@@ -111,4 +112,5 @@ SQL Injection/
     └── 07_basic_injection_test.png
 ```
 ---
+
 
