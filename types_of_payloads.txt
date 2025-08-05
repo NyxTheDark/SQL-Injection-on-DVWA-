@@ -1,10 +1,4 @@
-# SQL Injection Payload Types - Educational Reference
-
-**Author:** NyxTheDark  
-**Target:** DVWA on Metasploitable VM  
-**Purpose:** Educational demonstration of SQL injection attack vectors  
-
-This file contains various types of SQL injection payloads used in the demonstration, along with detailed explanations of how each payload works and what it accomplishes.
+# SQL Injection Payload Types
 
 ## 🎯 Basic SQL Injection Payloads
 
@@ -177,32 +171,4 @@ This file contains various types of SQL injection payloads used in the demonstra
 - **Purpose:** Extract data when results aren't directly visible
 - **Technique:** Use conditional logic and time delays
 - **Examples:** `IF(condition,'true','false')`, `SLEEP(5)`
-
-## ⚠️ Testing Guidelines
-
-### Safe Testing Environment
-- Only use these payloads on systems you own or have permission to test
-- DVWA on Metasploitable is specifically designed for this purpose
-- Never test on production systems without authorization
-
-### Payload Modification
-- Replace table/column names based on your target discovery
-- Adjust number of NULL values based on column count
-- Modify comment syntax based on database type
-
-### Expected Results
-- Authentication bypass: Multiple user records displayed
-- Data extraction: Sensitive information revealed
-- Information gathering: Database structure exposed
-
-## 📚 Educational Value
-
-Understanding these payloads helps with:
-- **Offensive Security:** Penetration testing skills
-- **Defensive Security:** Recognizing attack patterns
-- **Secure Development:** Avoiding vulnerable code patterns
-- **Security Awareness:** Understanding attack methodologies
-
 ---
-
-**Remember:** These payloads are for educational and authorized testing purposes only. Always ensure proper authorization before testing any system.
